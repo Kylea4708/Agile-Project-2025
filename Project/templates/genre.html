@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}Genres{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-4">Genres</h1>
+<ul class="list-group">
+    {% for genre in genres %}
+    <li class="list-group-item">{{ genre.type }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

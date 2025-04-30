@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}Books{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-4">Books</h1>
+<table class="table table-striped table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Quantity</th>
+            <th>Physical</th>
+            <th>Genre</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.quantity }}</td>
+            <td>{{ 'Yes' if book.physical else 'No' }}</td>
+            <td>{{ book.genre.type if book.genre else 'N/A' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
