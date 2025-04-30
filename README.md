@@ -20,7 +20,7 @@ This is a Flask-based web application for managing books, readers, and orders in
 - Created `Reader`, `Order`, and `ProductOrder` models
 - Refactored model imports to prevent circular dependencies (`from db import db`)
 - Set up automatic table creation using `db.create_all()` on app start
-- Built and styled the following HTML pages using Bootstrap and Jinja2:
+- Built and styled the following HTML pages:
   - `books.html`, `readers.html`, `orders.html`
 - Updated `home.html` to include buttons linking only to:
   - 📘 Books
