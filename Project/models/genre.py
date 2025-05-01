@@ -6,6 +6,6 @@ class Genre(db.Model):
     __tablename__ = 'genre'
 
     id = db.mapped_column(Integer, primary_key=True)
-    type = db.mapped_column(String)
+    name = db.mapped_column(String)
 
     books = relationship("Book", back_populates="genre")

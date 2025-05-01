@@ -21,7 +21,7 @@
             <td>{{ book.author }}</td>
             <td>{{ book.quantity }}</td>
             <td>{{ 'Yes' if book.physical else 'No' }}</td>
-            <td>{{ book.genre.type if book.genre else 'N/A' }}</td>
+            <td>{{ book.genre.name if book.genre else 'N/A' }}</td>
         </tr>
         {% endfor %}
     </tbody>
