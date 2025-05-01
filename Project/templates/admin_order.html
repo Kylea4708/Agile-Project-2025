@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}Create Order{% endblock %}
+
+{% block content %}
+<h2>Create New Order</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label>User</label>
+        <select name="user_id" class="form-select">
+            {% for user in users %}
+            <option value="{{ user.id }}">{{ user.name }} (ID: {{ user.id }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label>Book</label>
+        <select name="book_id" class="form-select">
+            {% for book in books %}
+            <option value="{{ book.id }}">{{ book.title }} (ID: {{ book.id }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label>Quantity</label>
+        <input type="number" name="quantity" class="form-control" min="1" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Order</button>
+</form>
+{% endblock %}
