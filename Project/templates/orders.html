@@ -24,7 +24,7 @@
             <td>{{ order.user.name if order.user else 'N/A' }}</td>
             <td>
                 {% for item in order.items %}
-                    Book {{ item.book_id }} (x{{ item.quantity }}){% if not loop.last %}, {% endif %}
+                    Book {{ item.book.title }} (x{{ item.quantity }}){% if not loop.last %}, {% endif %}
                 {% endfor %}
             </td>
             <td>{{ order.date_created }}</td>
