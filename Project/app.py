@@ -1,10 +1,10 @@
-import datetime
+from datetime import datetime
 from flask import Flask, render_template, redirect, request, url_for
 #from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from pathlib import Path
 #from dotenv import load_dotenv
 from db import db
-from models import Book, User, Order
+from models import Book, User, Order, Orderbook
 import os
 
 # Load environment variables (if needed)
@@ -65,7 +65,7 @@ def admin_create_order():
         if not user or not book:
             return "User or Book not found", 404
 
-        amount = 10.0 * quantity  # You can use book.price if needed
+        amount = 10.0 * quantity  
 
         order = Order(user=user, amount=amount, date_created=datetime.now())
         order_item = Orderbook(book=book, quantity=quantity)
@@ -74,9 +74,9 @@ def admin_create_order():
         db.session.add(order)
         db.session.commit()
 
-        return redirect(url_for("orders"))  # 👈 Redirect to the orders page
+        return redirect(url_for("orders"))  
 
-    # GET method: show form
+   
     users = db.session.execute(db.select(User)).scalars().all()
     books = db.session.execute(db.select(Book)).scalars().all()
     return render_template("admin_order.html", users=users, books=books)

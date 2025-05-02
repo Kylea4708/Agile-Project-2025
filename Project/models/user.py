@@ -7,6 +7,6 @@ class User(db.Model):
 
     id = db.mapped_column(Integer, primary_key=True)
     name = db.mapped_column(String)
-    email = db.mapped_column(String)
+    phone = db.mapped_column(String)
 
     orders = db.relationship("Order", back_populates='user')
