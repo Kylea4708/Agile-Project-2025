@@ -10,7 +10,7 @@ class Order(db.Model):
     date_created = db.mapped_column(DateTime)
     date_completed = db.mapped_column(DateTime, nullable=True)
     amount = db.mapped_column(Float, nullable=False)
-
+    
     user = relationship("User", back_populates="orders")
     items = relationship("Orderbook", back_populates="order")
 

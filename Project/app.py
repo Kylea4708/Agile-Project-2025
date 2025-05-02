@@ -52,7 +52,7 @@ def orders():
     orders = db.session.execute(db.select(Order)).scalars().all()
     return render_template("orders.html", orders=orders)
 
-@app.route("/admin/order/new", methods=["GET", "POST"])
+@app.route("/order/new", methods=["GET", "POST"])
 def admin_create_order():
     if request.method == "POST":
         user_id = int(request.form["user_id"])
