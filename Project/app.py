@@ -36,8 +36,14 @@ def books():
 
 @app.route("/users")
 def users():
-    users = db.session.execute(db.select(User)).scalars().all()
-    return render_template("users.html", users=users)
+    search_query= request.args.get("q","").strip()
+    stmt = db.select(User)
+
+    if search_query:
+        stmt = stmt.filter(User.name.ilike(f"%{search_query}%"))
+    
+    users = db.session.execute(stmt).scalars().all()
+    return render_template("users.html", users=users,search_query=search_query)
 
 
 @app.route("/orders")
