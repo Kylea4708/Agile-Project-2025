@@ -52,6 +52,58 @@ def orders():
     orders = db.session.execute(db.select(Order)).scalars().all()
     return render_template("orders.html", orders=orders)
 
+@app.route("/orders/<int:order_id>")
+def order_details(order_id):
+    order = db.session.get(Order, order_id)
+
+    pricing = {
+        "fiction": {"physical": random.uniform(15.00, 25.00), "digital": random.uniform(7.50, 12.50)}, 
+        "romance": {"physical": random.uniform(8.00, 15.00), "digital":  random.uniform(4.00, 7.50)}, 
+        "mystery": {"physical": random.uniform(14.00, 22.00), "digital":  random.uniform(7.00, 11.00)}, 
+        "fantasy": {"physical": random.uniform(16.00, 28.00), "digital":  random.uniform(8.00, 14.00)},
+        "science": {"physical": random.uniform(15.00, 26.00), "digital":  random.uniform(7.50, 13.00)}, 
+        "history": {"physical": random.uniform(18.00, 30.00), "digital":  random.uniform(9.00, 15.00)}, 
+        "biography": {"physical": random.uniform(18.00, 28.00), "digital":  random.uniform(9.00, 14.00)},
+        "poetry": {"physical": random.uniform(12.00, 20.00), "digital":  random.uniform(6.00, 10.00)}, 
+        "thriller": {"physical": random.uniform(13.00, 21.00), "digital":  random.uniform(6.50, 10.50)}, 
+        "travel": {"physical": random.uniform(15.00, 27.00), "digital":  random.uniform(7.50, 13.50)}, 
+    }
+
+    format = {
+        True: "physical",
+        False: "digital",
+    }
+
+    item_prices = {}
+
+    total = 0
+    for item in order.items:
+        book = item.book
+        if book and book.genre:
+            genretype = book.genre.name.lower()
+            format_type = format[book.physical]
+
+            if genretype in pricing and format_type in pricing[genretype]:
+                item_price = pricing[genretype][format_type]
+                item_prices[item.book_id] = item_price
+                total += item_price * item.quantity
+
+            else:
+                if item.quantity > 0:
+                    item_prices[item.book_id] = order.amount / item.quantity
+                else:
+                    item.quantity = 0
+                    item_prices[item.book_id] = order.amount / item.quantity
+        else:
+            if item.quantity > 0:
+                    item_prices[item.book_id] = order.amount / item.quantity
+            else:
+                item.quantity = 0
+                item_prices[item.book_id] = order.amount / item.quantity 
+
+    return render_template("User_order.html", order=order, total=total, item_prices=item_prices)
+
+
 @app.route("/order/new", methods=["GET", "POST"])
 def admin_create_order():
 

@@ -17,11 +17,14 @@ This is a Flask-based web application for managing books, readers, and orders in
 ## 🆕 Recent Changes
 
 ✅ **May 6, 2025**
-- Implemented dynamic book pricing based on genre and format (physical vs. digital)
-- Replaced static order pricing with logic that derives unit price from genre-specific pricing tables
-- Integrated boolean-to-format mapping using `True: "physical", False: "digital"` dictionary for cleaner logic
-- Cleaned up order processing logic by removing unnecessary conditionals and using structured lookup
-- Genre name matching made case-insensitive for consistent pricing resolution
+- Implemented dynamic book pricing based on genre and format (physical vs. digital) using a genre-based pricing matrix
+- Replaced static order pricing with logic that calculates unit price dynamically during order creation
+- Integrated boolean-to-format mapping via `{ True: "physical", False: "digital" }` for clean format resolution
+- Made genre key access case-insensitive to prevent lookup errors
+- Added order detail view (`/orders/<id>`) to display all items, quantities, unit prices, and subtotals in a dedicated page
+- Designed responsive "book-like" order cards using Bootstrap — each order appears as a visual tile and links to its details
+- Deprecated tabular order layout in favor of a more engaging, card-based interface for browsing orders
+
 
 ✅ **May 3, 2025**
 - Added search bars to both `books.html` and `readers.html` templates
@@ -44,5 +47,3 @@ This is a Flask-based web application for managing books, readers, and orders in
   - 📦 Orders
 
 Kyle, Dylan, Sandy, Arsh, Mario, and Maliyah
-
-change thing

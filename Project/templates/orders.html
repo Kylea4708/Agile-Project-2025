@@ -4,34 +4,27 @@
 
 {% block content %}
 <h1 class="text-center mb-4">Orders</h1>
-<table class="table table-bordered">
-    <thead class="table-light">
-        <tr>
-            <th>Order ID</th>
-            <th>User ID</th>
-            <th>User Name</th>
-            <th>Books (ID x Quantity)</th>
-            <th>Created</th>
-            <th>Completed</th>
-            <th>Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for order in orders %}
-        <tr>
-            <td>{{ order.id }}</td>
-            <td>{{ order.user.id if order.user else 'N/A' }}</td>
-            <td>{{ order.user.name if order.user else 'N/A' }}</td>
-            <td>
-                {% for item in order.items %}
-                    Book {{ item.book.title }} (x{{ item.quantity }}){% if not loop.last %}, {% endif %}
-                {% endfor %}
-            </td>
-            <td>{{ order.date_created }}</td>
-            <td>{{ order.date_completed or 'Pending' }}</td>
-            <td>${{ order.amount }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    {% for order in orders %}
+    <div class="col">
+        <a href="{{ url_for('order_details', order_id=order.id) }}" class="text-decoration-none text-dark">
+            <div class="card shadow h-100 border border-3 border-info" style="border-radius: 12px; transition: transform 0.2s ease;">
+                <div class="card-body">
+                    <h5 class="card-title">📘 Order #{{ order.id }}</h5>
+                    <p class="card-text"><strong>User:</strong> {{ order.user.name if order.user else 'N/A' }}</p>
+                    <p class="card-text"><strong>Books:</strong>
+                        {% for item in order.items %}
+                            {{ item.book.title }} (x{{ item.quantity }}){% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="card-text"><strong>Date:</strong> {{ order.date_created.strftime('%Y-%m-%d') }}</p>
+                    <p class="card-text"><strong>Status:</strong> {{ order.date_completed.strftime('%Y-%m-%d') if order.date_completed else 'Pending' }}</p>
+                    <p class="card-text"><strong>Amount:</strong> ${{ "%.2f"|format(order.amount) }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
