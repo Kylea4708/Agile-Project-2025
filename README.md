@@ -15,6 +15,8 @@ This is a Flask-based web application for managing books, readers, and orders in
 - Automatic database creation on first run
 
 ## 🆕 Recent Changes
+✅ **May 7th, 2025**
+
 ✅ **April 30, 2025**
 - Added relational `Book` and `Genre` models using `genre_id` foreign key
 - Created `Reader`, `Order`, and `ProductOrder` models
@@ -28,3 +30,4 @@ This is a Flask-based web application for managing books, readers, and orders in
   - 📦 Orders
 
 Kyle, Dylan, Sandy, Arsh, Mario, and Maliyah
+
