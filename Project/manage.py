@@ -20,7 +20,7 @@ def import_users():
             db.session.commit()
             print(f"Imported {reader.line_num - 1} users.")
 
-def fetch_books(subject, max_results=random.randint(10,200)):
+def fetch_books(subject, max_results=10):
     url = "https://www.googleapis.com/books/v1/volumes"
     params = {"q": f"subject:{subject}", "maxResults": max_results}
     response = requests.get(url, params=params)
@@ -67,7 +67,7 @@ def create_books():
                 title=title,
                 author=authors,
                 genre=genre,
-                quantity=random.randint(1,100),
+                quantity=10,
                 physical=True
             )
             db.session.add(book)
