@@ -20,7 +20,10 @@ def import_users():
             db.session.commit()
             print(f"Imported {reader.line_num - 1} users.")
 
-def fetch_books(subject, max_results=10):
+def fetch_books(subject, max_results=None):
+    if max_results is None:
+        max_results = random.randint(10,100)
+
     url = "https://www.googleapis.com/books/v1/volumes"
     params = {"q": f"subject:{subject}", "maxResults": max_results}
     response = requests.get(url, params=params)
@@ -44,11 +47,16 @@ def create_books():
     print(f"Selected genre: {random_genre}")
 
     with app.app_context():
+        db.create_all()
         books_data = fetch_books(random_genre)
+
+        count = 0
 
         for item in books_data:
             volume = item.get("volumeInfo", {})
             title = volume.get("title")
+
+
             authors = ", ".join(volume.get("authors", ["Unknown Author"]))
             categories = volume.get("categories", [random_genre.capitalize()])
             genre_name = categories[0]
@@ -71,10 +79,11 @@ def create_books():
                 physical=True
             )
             db.session.add(book)
+            count += 1
             print(f"Added: {title} by {authors}")
 
         db.session.commit()
-        print("Books successfully added.")
+        print(f"{count}, books successfully added.")
 
 def main():
     if len(sys.argv) < 2:

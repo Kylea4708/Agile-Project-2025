@@ -49,6 +49,26 @@ def orders():
     orders = db.session.execute(db.select(Order)).scalars().all()
     return render_template("orders.html", orders=orders)
 
+@app.route("/orders/<int:order_id>")
+def order_details(order_id):
+    order = db.session.get(Order, order_id)
+
+    price_per_book = 10.0
+    items_with_subtotals = []
+    total = 0
+
+    for item in order.items:
+        subtotal = price_per_book * item.quantity
+        total += subtotal
+        items_with_subtotals.append({
+            "title": item.book.title,
+            "quantity": item.quantity,
+            "price": price_per_book,
+            "subtotal": subtotal
+        })
+
+    return render_template("User_order.html", order=order, items=items_with_subtotals, total=total)
+
 @app.route("/order/new", methods=["GET", "POST"])
 def admin_create_order():
     if request.method == "POST":
@@ -62,7 +82,7 @@ def admin_create_order():
         if not user or not book:
             return "User or Book not found", 404
 
-        amount = 10.0 * quantity  
+        amount = 10.00 * quantity
 
         order = Order(user=user, amount=amount, date_created=datetime.now())
         order_item = Orderbook(book=book, quantity=quantity)
