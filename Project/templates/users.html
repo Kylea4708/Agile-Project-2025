@@ -3,7 +3,15 @@
 {% block pagetitle %}Readers{% endblock %}
 
 {% block content %}
-<h1 class="text-center mb-4">Readers</h1>
+<h1 class="text-center mb-4">Users</h1>
+
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Search by name or phone" value="{{ search_query }}">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+</form>
+
 <table class="table table-bordered">
     <thead class="table-light">
         <tr>
@@ -21,3 +29,4 @@
     </tbody>
 </table>
 {% endblock %}
+
