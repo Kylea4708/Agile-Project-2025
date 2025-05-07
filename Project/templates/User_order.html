@@ -19,10 +19,10 @@
     <tbody>
         {% for item in order.items %}
         <tr>
-            <td>{{ item.book.title }}</td>
+            <td>{{ item.title }}</td>
             <td>{{ item.quantity }}</td>
-            <td>${{ "%.2f"|format(item_prices[item.book_id]) }}</td>
-            <td>${{ "%.2f"|format(item_prices[item.book_id] * item.quantity) }}</td>
+            <td>${{ "%.2f"|format(item.price]) }}</td>
+            <td>${{ "%.2f"|format(item.subtotal) }}</td>
         </tr>
         {% endfor %}
     </tbody>

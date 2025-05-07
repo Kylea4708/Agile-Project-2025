@@ -1,5 +1,5 @@
 from . import db
-from sqlalchemy import Integer, ForeignKey
+from sqlalchemy import Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
 class Orderbook(db.Model):  # renamed to match your __all__ import
