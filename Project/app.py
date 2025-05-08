@@ -4,7 +4,7 @@ from pathlib import Path
 from db import db
 from models import Book, User, Order, Orderbook
 import os
-
+import random
 
 
 app = Flask(__name__)
@@ -53,7 +53,7 @@ def orders():
 def order_details(order_id):
     order = db.session.get(Order, order_id)
 
-    price_per_book = 10.0
+    price_per_book = random.randint(10, 50)
     items_with_subtotals = []
     total = 0
 

@@ -75,7 +75,7 @@ def create_books():
                 title=title,
                 author=authors,
                 genre=genre,
-                quantity=10,
+                quantity=random.randint(10,100),
                 physical=True
             )
             db.session.add(book)
