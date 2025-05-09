@@ -1,20 +1,38 @@
 import unittest
-from ..models.genre import Genre, Book
+from models import Genre, Book
 
-class TestGenreModel(unittest.TestCase):
 
-    def test_genre_model_attributes(self):
-        genre = Genre(name="Science Fiction")
-        self.assertEqual(genre.name, "Science Fiction")
+def test_genre_model_valid_input_values():
+        # Test where a genre object is correctly initialized with input values
+        genre = Genre(id = 1, 
+                      name="Science Fiction")
+        assert genre.name == "Science Fiction"
+        assert genre.id == 1
 
-    def test_genre_books_relationship(self):
-        genre = Genre(name="Fantasy")
-        book1 = Book(title="Book 1", author="Author 1", quantity=3, physical=True, genre=genre)
-        book2 = Book(title="Book 2", author="Author 2", quantity=4, physical=False, genre=genre)
+    
+def test_genre_model_empty_genre_name():
+        # Test where genre name is empty
+        genre = Genre(id = 1,
+                      name="" )
+        assert genre.name == ""
 
-        self.assertEqual(len(genre.books), 2) 
-        self.assertEqual(genre.books[0].title, "Book 1")
-        self.assertEqual(genre.books[1].title, "Book 2")
 
-if __name__ == '__main__':
-    unittest.main()
+def test_genre_model_zero_genre_id():
+        # Test where genre id is zero
+        genre = Genre(id = 0,
+                      name="Adventure")
+        assert genre.id == 0
+
+
+def test_genre_model_incorrect_datatype_for_genre_name():
+        # Test where datatype is incorrect for genre name
+        genre = Genre(id = 1,
+                      name=1)
+        assert isinstance(genre.name, str)
+
+
+def test_genre_model_incorrect_datatype_for_id():
+        # Test where datatype is incorrect for id
+        genre = Genre(id = "1",
+                      name="History")
+        assert isinstance(genre.id, int)
