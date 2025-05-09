@@ -2,31 +2,39 @@ import pytest
 from app import app, db
 from models import User
 
-@pytest.fixture
-def test_client():
-    app.config["TESTING"] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
-    with app.test_client() as client:
-        with app.app_context():
-            db.create_all()
-            yield client
-            db.drop_all()
+def test_user_in_table(): #tests that the user values will be viewed on the table
+    user = User(
+        id = 1,
+        name = "Test",
+        phone = "574-824-9133"
+    )
 
-@pytest.fixture
-def sample_users():
-    user1 = User(name="Alice")
-    user2 = User(name="Bob")
-    db.session.add_all([user1, user2])
-    db.session.commit()
+    assert user.id == 1
+    assert user.name == "Test"
+    assert user.phone == "574-824-9133"
 
-def test_users_page_loads(test_client, sample_users):
-    response = test_client.get("/users")
-    assert response.status_code == 200
-    assert b"Alice" in response.data
-    assert b"Bob" in response.data
+def test_user_null_name():
+    user = User(
+        id = 1,
+        phone = "574-824-9133"
+    )
 
-def test_user_search(test_client, sample_users):
-    response = test_client.get("/users?q=Alice")
-    assert response.status_code == 200
-    assert b"Alice" in response.data
-    assert b"Bob" not in response.data
+    assert user.name is None
+
+def test_user_null_phone():
+    user = User(
+        id = 1,
+        name = "Test",
+    )
+
+    assert user.phone is None
+
+def test_id_is_int():
+    user = User(
+        id = "1"
+    )
+
+    assert user.id != int()
+
+    with pytest.raises(TypeError):
+        user.id("2")

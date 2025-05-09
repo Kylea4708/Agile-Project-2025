@@ -22,7 +22,7 @@ def import_users():
 
 def fetch_books(subject, max_results=None):
     if max_results is None:
-        max_results = random.randint(10,100)
+        max_results = random.randint(10, 50)
 
     url = "https://www.googleapis.com/books/v1/volumes"
     params = {"q": f"subject:{subject}", "maxResults": max_results}
@@ -76,7 +76,7 @@ def create_books():
                 author=authors,
                 genre=genre,
                 quantity=random.randint(10,100),
-                physical=True
+                physical=random.choice([True, False])
             )
             db.session.add(book)
             count += 1

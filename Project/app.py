@@ -53,17 +53,16 @@ def orders():
 def order_details(order_id):
     order = db.session.get(Order, order_id)
 
-    price_per_book = random.randint(10, 50)
     items_with_subtotals = []
     total = 0
 
     for item in order.items:
-        subtotal = price_per_book * item.quantity
+        subtotal = item.unit_price * item.quantity
         total += subtotal
         items_with_subtotals.append({
             "title": item.book.title,
             "quantity": item.quantity,
-            "price": price_per_book,
+            "price": item.unit_price,
             "subtotal": subtotal
         })
 
@@ -82,10 +81,11 @@ def admin_create_order():
         if not user or not book:
             return "User or Book not found", 404
 
-        amount = 10.00 * quantity
+        price_per_book = random.randint(10, 50)
+        amount = price_per_book * quantity
 
         order = Order(user=user, amount=amount, date_created=datetime.now())
-        order_item = Orderbook(book=book, quantity=quantity)
+        order_item = Orderbook(book=book, quantity=quantity, unit_price=price_per_book)
         order.items.append(order_item)
 
         db.session.add(order)

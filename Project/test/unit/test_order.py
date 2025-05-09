@@ -15,7 +15,6 @@ def test_order():
     assert order.user_id == 1
     assert order.amount == 100.99
 
-
 # test nullable date
 def test_nullable_date():
     order = Order (

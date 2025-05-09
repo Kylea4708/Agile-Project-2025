@@ -27,12 +27,25 @@ def test_user_correct_name(test_client):
     assert "Ben" in html
     assert "Dan" not in html 
 
+def test_user_correct_number(test_client):
+    with test_client.application.app_context():
+        db.session.add(User(name="Ben", phone="101-101-1010"))
+        db.session.add(User(name="Dan", phone="999-999-9999"))
+        db.session.commit()
+
+    response = test_client.get("/users?q=101-101-1010")
+    html = response.data.decode("utf-8")
+
+    assert response.status_code == 200
+    assert "Ben" in html
+    assert "Dan" not in html 
+
 def test_invalid_booksearch_title(test_client): # Checks if No books show up you don't enter anything
     with test_client.application.app_context():
         db.session.add(Book(title="Dune", author="Herbert", quantity=2, physical=True))
         db.session.commit()
 
-    response = test_client.get("/books?q=does not exist")
+    response = test_client.get("/books?q=")
     html = response.data.decode("utf-8")
 
     assert "Dune" not in html
