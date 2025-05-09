@@ -23,7 +23,7 @@ def test_creating_order(test_client):
     assert "tester" in html
     assert "$30.00" in html
 
-def test_invalid_user_in_order(test_client): # If the there is an invalid user to an order 
+def test_invalid_user_in_order(test_client): # If the there is an invalid user to an order displayed to the page
     with test_client.application.app_context():
         book = Book(title="Flask for Beginners",  author="Ben", quantity=10, physical=True)
     
@@ -41,7 +41,7 @@ def test_invalid_user_in_order(test_client): # If the there is an invalid user t
 
     assert "User or Book not found" in html
 
-def test_invalid_book_in_order(test_client): # If the there is an invalid book in an order 
+def test_invalid_book_in_order(test_client): # If the there is an invalid book in an order displayed to the page  
     with test_client.application.app_context():
         user = User(name="tester", phone = "000-000-0000")
     

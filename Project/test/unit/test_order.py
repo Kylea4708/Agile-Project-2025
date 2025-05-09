@@ -22,7 +22,7 @@ def test_nullable_date():
         amount = 249.99,
     )
     
-    assert order.date_completed is None
+    assert order.date_created is None
     
 
 # amount cannot be nullable
@@ -35,7 +35,6 @@ def test_null_amount():
 
     with pytest.raises(TypeError):
         order.amount(None)
-
 
 # testing an amount that is negative 
 def test_negative_amount():
