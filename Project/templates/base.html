@@ -56,6 +56,26 @@
             text-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
             transform: scale(1.05);
         }
+        .navbar-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.5px;
+        }
 
 
     </style>
@@ -66,7 +86,7 @@
     <main>
         <div class="navbar">
         <div class="brand">Bookworms</div>
-        <div class="d-flex flex-wrap justify-content-center gap-3">
+        <div class="navbar-links">
             <a href="{{ url_for('home') }}" class="btn btn-secondary">Home</a>
             <a href="{{ url_for('books') }}" class="btn btn-primary">Books</a>
             <a href="{{ url_for('users') }}" class="btn btn-success">Users</a>
