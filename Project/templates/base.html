@@ -43,18 +43,20 @@
             backdrop-filter: blur(10px);
         }
 
-        .navbar .brand {
+        .navbar .brand a {
             font-size: 26px;
             font-weight: bold;
             color: #007bff;
             text-transform: uppercase;
             letter-spacing: 1px;
+            text-decoration: none;
             transition: all 0.3s ease;
         }
 
-        .navbar .brand:hover {
+        .navbar .brand a:hover {
             text-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
             transform: scale(1.05);
+            color: #0056b3;
         }
 
         .navbar-links {
@@ -161,7 +163,7 @@
     <div class="container py-4">
         <main>
             <div class="navbar">
-                <div class="brand"><i class="fa-solid fa-book"></i>  Bookworms</div>
+                <div class="brand"><a href="{{ url_for('home')}}"><i class="fa-solid fa-book"></i> Bookworms</a></div>
                 <div class="navbar-links">
                     <a href="{{ url_for('home') }}" class="btn btn-secondary">Home</a>
                     <a href="{{ url_for('books') }}" class="btn btn-primary">Books</a>
