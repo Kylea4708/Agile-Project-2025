@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Flask, render_template, redirect, request, url_for
 from pathlib import Path
 from db import db
-from models import Book, User, Order, Orderbook
+from models import Book, User, Order, Orderbook, Genre
 import os
 import random
 
@@ -24,10 +24,23 @@ def home():
 
 @app.route("/books")
 def books():
-    search_query = request.args.get("q","").strip()
+    search_query = request.args.get("search_query", "").strip()
+    genre_filter = request.args.get("genre_filter")
+    format_style = request.args.get("format_style")
+
     stmt = db.select(Book)
+
     if search_query:
-        stmt = stmt.filter(Book.title.ilike(f"%{search_query}%"))
+        stmt = stmt.where(Book.title.ilike(f"%{search_query}%"))
+    
+    if genre_filter:
+        stmt = stmt.join(Book.genre).where(Genre.name == genre_filter)
+
+    if format_style == 'physical':
+        stmt = stmt.where(Book.physical == True)
+
+    if format_style == 'digital':
+        stmt = stmt.where(Book.physical == False)
 
     books = db.session.execute(stmt).scalars().all()
     return render_template("books.html", books=books,search_query=search_query)
