@@ -12,5 +12,5 @@ class Order(db.Model):
     amount = db.mapped_column(Float, nullable=False)
     
     user = relationship("User", back_populates="orders")
-    items = relationship("Orderbook", back_populates="order")
+    items = relationship("Orderbook", back_populates="order", cascade="all, delete-orphan")
 
