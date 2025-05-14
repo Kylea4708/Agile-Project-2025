@@ -31,7 +31,7 @@ def books():
     stmt = db.select(Book)
 
     if search_query:
-        stmt = stmt.where(Book.title.ilike(f"%{search_query}%")) | (Book.author.ilike(f"%{search_query}%"))
+        stmt = stmt.where(Book.title.ilike(f"%{search_query}%"))
     
     if genre_filter and genre_filter.strip() != "":
         stmt = stmt.join(Book.genre).where(Genre.name == genre_filter)
@@ -64,6 +64,14 @@ def users():
 def orders():
     orders = db.session.execute(db.select(Order)).scalars().all()
     return render_template("orders.html", orders=orders)
+
+@app.route("/orders/<int:order_id>/delete", methods=["POST"])
+def delete_order(order_id):
+    order = db.session.get(Order, order_id)
+    if order:
+        db.session.delete(order)
+        db.session.commit()
+    return redirect(url_for("orders"))
 
 @app.route("/orders/<int:order_id>")
 def order_details(order_id):
@@ -113,6 +121,57 @@ def admin_create_order():
     users = db.session.execute(db.select(User)).scalars().all()
     books = db.session.execute(db.select(Book)).scalars().all()
     return render_template("admin_order.html", users=users, books=books)
+
+@app.route("/manage-books", methods=["GET", "POST"])
+def manage_books():
+    if request.method == "POST":
+        if "create" in request.form:
+            title = request.form["title"]
+            author = request.form["author"]
+            genre_name = request.form["genre_name"] 
+            quantity = int(request.form["quantity"])
+            physical = bool(request.form.get("physical", False))
+
+            genre = db.session.execute(db.select(Genre).filter_by(name=genre_name)).scalar()
+            if not genre:
+                genre = Genre(name=genre_name)
+                db.session.add(genre)
+                db.session.commit()
+
+            book = Book(
+                title=title,
+                author=author,
+                genre=genre,
+                quantity=quantity,
+                physical=physical
+            )
+            db.session.add(book)
+            db.session.commit()
+
+        elif "edit" in request.form:
+            book_id = int(request.form["book_id"])
+            book = db.session.get(Book, book_id)
+            if book:
+                book.title = request.form["title"]
+                book.author = request.form["author"]
+                book.genre_id = int(request.form["genre_id"])
+                book.quantity = int(request.form["quantity"])
+                book.physical = bool(request.form.get("physical", False))
+                db.session.commit()
+
+        elif "delete" in request.form:
+            book_id = int(request.form["book_id"])
+            book = db.session.get(Book, book_id)
+            if book:
+                db.session.delete(book)
+                db.session.commit()
+
+        return redirect(url_for("manage_books"))
+
+    genres = db.session.execute(db.select(Genre)).scalars().all()
+    books = db.session.execute(db.select(Book)).scalars().all()
+    return render_template("manage_books.html", books=books, genres=genres)
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=8888)
