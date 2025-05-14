@@ -1,4 +1,0 @@
-flask
-pytest
-sqlalchemy
-flask-sqlalchemy
