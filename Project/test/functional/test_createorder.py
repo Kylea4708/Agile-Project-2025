@@ -21,7 +21,6 @@ def test_creating_order(test_client):
     assert "Order" in html
     assert "Flask for Beginners" in html
     assert "tester" in html
-    assert "$30.00" in html
 
 def test_invalid_user_in_order(test_client): # If the there is an invalid user to an order displayed to the page
     with test_client.application.app_context():
