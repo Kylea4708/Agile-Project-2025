@@ -31,7 +31,7 @@ def books():
     stmt = db.select(Book)
 
     if search_query:
-        stmt = stmt.where(Book.title.ilike(f"%{search_query}%"))
+        stmt = stmt.where(Book.title.ilike(f"%{search_query}%")) 
     
     if genre_filter and genre_filter.strip() != "":
         stmt = stmt.join(Book.genre).where(Genre.name == genre_filter)
