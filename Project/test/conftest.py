@@ -1,5 +1,12 @@
-# test/conftest.py
+import sys
+from pathlib import Path
+
 import pytest
+
+# Add Project directory to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Now use absolute imports
 from app import app, db
 from models import Book, User, Genre
 
