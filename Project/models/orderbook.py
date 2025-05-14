@@ -10,5 +10,5 @@ class Orderbook(db.Model):  # renamed to match your __all__ import
     quantity = db.mapped_column(Integer, nullable=False)
     unit_price = db.mapped_column(Float, nullable=False)
 
-    book = relationship("Book")
+    book = relationship("Book", back_populates="order_items")
     order = relationship("Order", back_populates="items")
