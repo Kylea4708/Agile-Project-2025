@@ -13,5 +13,7 @@ class Book(db.Model):
     genre_id = db.mapped_column(Integer, ForeignKey('genre.id'))
 
     genre = relationship("Genre", back_populates="books")
+    order_items = relationship("Orderbook", back_populates="book", cascade="all, delete-orphan")
+
 
    
