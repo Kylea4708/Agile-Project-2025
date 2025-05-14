@@ -21,6 +21,10 @@
                     <p class="card-text"><strong>Date:</strong> {{ order.date_created.strftime('%Y-%m-%d') }}</p>
                     <p class="card-text"><strong>Status:</strong> {{ order.date_completed.strftime('%Y-%m-%d') if order.date_completed else 'Pending' }}</p>
                     <p class="card-text"><strong>Amount:</strong> ${{ "%.2f"|format(order.amount) }}</p>
+    
+                    <form method="POST" action="{{ url_for('delete_order', order_id=order.id) }}">
+                        <button type="submit" class="btn btn-danger mt-2">Delete</button>
+                    </form>
                 </div>
             </div>
         </a>
