@@ -2,6 +2,9 @@
 {% block pagetitle %}Manage Books{% endblock %}
 {% block content %}
 <h1 class="text-center mb-4">Manage Books</h1>
+{% if error_msg %}
+    <div class="alert alert-danger">{{ error_msg }}</div>
+{% endif %}
 <h2>Create a New Book</h2>
 <form method="POST" class="mb-4">
     <input type="hidden" name="create">
@@ -17,8 +20,8 @@
     </div>
 
     <div class="mb-3">
-        <label for="genre_id" class="form-label">Genre</label>
-        <select name="genre_id" class="form-select form-select-lg">
+        <label for="create-genre-id" class="form-label">Genre</label>
+        <select name="genre_id" id="create-genre-id" class="form-select form-select-lg">
             <option value="">-- Select an existing genre --</option>
             {% for genre in genres %}
                 <option value="{{ genre.id }}">{{ genre.name }}</option>
@@ -27,8 +30,8 @@
     </div>
     
     <div class="mb-3">
-        <label for="genre_name" class="form-label">Or create a new genre</label>
-        <input type="text" name="genre_name" class="form-control form-control-lg" placeholder="New genre name">
+        <label for="create-genre-name" class="form-label">Or create a new genre</label>
+        <input type="text" name="genre_name" id="create-genre-name" class="form-control form-control-lg" placeholder="New genre name">
     </div>
 
     <div class="mb-3">
@@ -53,7 +56,7 @@
             <th>Quantity</th>
             <th>Physical</th>
             <th>Genre</th>
-            <th>Change</th>
+            <th style="width: 360px;">Change</th>
         </tr>
     </thead>
     <tbody>
@@ -68,20 +71,23 @@
                 <form method="POST" style="display:inline; width: 100%; padding: 15px;">
                     <input type="hidden" name="edit">
                     <input type="hidden" name="book_id" value="{{ book.id }}">
+
                     <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
+                        <label for="title-{{ book.id }}" class="form-label">Title</label>
                         <input type="text" name="title" value="{{ book.title }}" class="form-control form-control-lg" required>
                     </div>
+
                     <div class="mb-3">
-                        <label for="author" class="form-label">Author</label>
+                        <label for="author-{{ book.id }}" class="form-label">Author</label>
                         <input type="text" name="author" value="{{ book.author }}" class="form-control form-control-lg" required>
                     </div>
+
                     <div class="mb-3">
-                        <label for="genre_id" class="form-label">Genre</label>
-                        <select name="genre_id" class="form-select form-select-lg">
+                        <label for="edit-genre-id-{{ book.id }}" class="form-label">Genre</label>
+                        <select name="genre_id" id="edit-genre-id-{{ book.id }}" class="form-select form-select-lg">
                             <option value="">-- Select an existing genre --</option>
                             {% for genre in genres %}
-                                <option value="{{ genre.id }}" {% if genre.id == book.genre.id %}selected{% endif %}>
+                                <option value="{{ genre.id  }}" {% if genre.id == book.genre.id %}selected{% endif %}>
                                     {{ genre.name }}
                                 </option>
                             {% endfor %}
@@ -89,18 +95,20 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="genre_name" class="form-label">Or create a new genre</label>
-                        <input type="text" name="genre_name" class="form-control form-control-lg" placeholder="New genre name">
+                        <label for="edit-genre-name-{{ book.id }}" class="form-label">Or create a new genre</label>
+                        <input type="text" name="genre_name" id="edit-genre-name-{{ book.id }}" class="form-control form-control-lg" placeholder="New genre name">
                     </div>
                     
                     <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantity</label>
+                        <label for="quantity-{{ book.id }}" class="form-label">Quantity</label>
                         <input type="number" name="quantity" value="{{ book.quantity }}" class="form-control form-control-lg" required>
                     </div>
+
                     <div class="mb-3 form-check">
                         <input type="checkbox" name="physical" {% if book.physical %}checked{% endif %} class="form-check-input">
                         <label for="physical" class="form-check-label">Physical</label>
                     </div>
+
                     <button type="submit" class="btn btn-warning btn-sm">Update</button>
                 </form>
 
@@ -114,4 +122,5 @@
         {% endfor %}
     </tbody>
 </table>
+
 {% endblock %}
