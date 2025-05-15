@@ -5,10 +5,32 @@
 {% block content %}
 <h1 class="text-center mb-4">Books</h1>
 
-<form method="get" class="mb-4">
-    <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search by book title" value="{{ search_query }}">
-        <button class="btn btn-primary" type="submit">Search</button>
+<form method="get" class="row g-2 mb-4 align-items-center">
+    <div class="col-md-7">
+        <input type="text" name="q" class="form-control" placeholder="Search Title" value="{{ search_query }}">
+    </div>
+
+    <div class="col-md-2">
+        <select name="genre_filter" class="form-select">
+            <option value="">Genre Options</option>
+            {% for genre in genres %}
+                <option value="{{ genre.name }}" {% if request.args.get('genre_filter') == genre.name %}selected{% endif %}>
+                    {{ genre.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <select name="format_style" class="form-select">
+            <option value="">Format Options</option>
+            <option value="physical" {% if request.args.get('format_style') == 'physical' %}selected{% endif %}>Physical</option>
+            <option value="digital" {% if request.args.get('format_style') == 'digital' %}selected{% endif %}>Digital</option>
+        </select>
+    </div>
+    
+    <div class="col-md-1">
+        <button class="btn btn-primary w-100" type="submit">Search</button>
     </div>
 </form>
 
