@@ -160,8 +160,16 @@ def manage_books():
             book_id = int(request.form["book_id"])
             book = db.session.get(Book, book_id)
             if book:
+                affected_orders = {item.order for item in book.order_items}
+        
                 db.session.delete(book)
                 db.session.commit()
+
+                for order in affected_orders:
+                    if not order.items:  
+                        db.session.delete(order)
+        
+        db.session.commit()
 
         return redirect(url_for("manage_books"))
 
