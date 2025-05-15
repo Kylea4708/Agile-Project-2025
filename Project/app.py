@@ -128,15 +128,38 @@ def manage_books():
         if "create" in request.form:
             title = request.form["title"]
             author = request.form["author"]
-            genre_name = request.form["genre_name"] 
+            genre_name = request.form.get("genre_name", "").strip()
+            genre_id = request.form.get("genre_id", "").strip()
             quantity = int(request.form["quantity"])
-            physical = bool(request.form.get("physical", False))
+            physical = bool(request.form.get("physical"))
 
-            genre = db.session.execute(db.select(Genre).filter_by(name=genre_name)).scalar()
-            if not genre:
-                genre = Genre(name=genre_name)
-                db.session.add(genre)
-                db.session.commit()
+            # Check for mutual exclusivity error (both empty or both filled)
+            if (not genre_name and not genre_id):
+                error_msg = "You must select an existing genre or enter a new one."
+            elif genre_name and genre_id:
+                error_msg = "Please select either an existing genre or enter a new genre, not both."
+            else:
+                error_msg = None
+
+            if error_msg:
+                genres = db.session.execute(db.select(Genre)).scalars().all()
+                books = db.session.execute(db.select(Book)).scalars().all()
+                return render_template(
+                    "manage_books.html",
+                    books=books,
+                    genres=genres,
+                    error_msg=error_msg
+                )
+
+            # Handle genre creation or selection
+            if genre_name:
+                genre = db.session.execute(db.select(Genre).filter_by(name=genre_name)).scalar()
+                if not genre:
+                    genre = Genre(name=genre_name)
+                    db.session.add(genre)
+                    db.session.commit()
+            else:
+                genre = db.session.get(Genre, int(genre_id))
 
             book = Book(
                 title=title,
@@ -154,7 +177,39 @@ def manage_books():
             if book:
                 book.title = request.form["title"]
                 book.author = request.form["author"]
-                book.genre_id = int(request.form["genre_id"])
+
+                genre_name = request.form.get("genre_name", "").strip()
+                genre_id = request.form.get("genre_id", "").strip()
+
+                # Check for mutual exclusivity error
+                if (not genre_name and not genre_id):
+                    error_msg = "You must select an existing genre or enter a new one."
+                elif genre_name and genre_id:
+                    error_msg = "Please select either an existing genre or enter a new genre, not both."
+                else:
+                    error_msg = None
+
+                if error_msg:
+                    genres = db.session.execute(db.select(Genre)).scalars().all()
+                    books = db.session.execute(db.select(Book)).scalars().all()
+                    return render_template(
+                        "manage_books.html",
+                        books=books,
+                        genres=genres,
+                        error_msg=error_msg
+                    )
+
+                # Genre assignment
+                if genre_name:
+                    genre = db.session.execute(db.select(Genre).filter_by(name=genre_name)).scalar()
+                    if not genre:
+                        genre = Genre(name=genre_name)
+                        db.session.add(genre)
+                        db.session.commit()
+                    book.genre_id = genre.id
+                elif genre_id:
+                    book.genre_id = int(genre_id)
+
                 book.quantity = int(request.form["quantity"])
                 book.physical = bool(request.form.get("physical", False))
                 db.session.commit()
@@ -164,15 +219,13 @@ def manage_books():
             book = db.session.get(Book, book_id)
             if book:
                 affected_orders = {item.order for item in book.order_items}
-        
                 db.session.delete(book)
                 db.session.commit()
 
                 for order in affected_orders:
-                    if not order.items:  
+                    if not order.items:
                         db.session.delete(order)
-        
-        db.session.commit()
+                db.session.commit()
 
         return redirect(url_for("manage_books"))
 
