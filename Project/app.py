@@ -24,16 +24,16 @@ def home():
 
 @app.route("/books")
 def books():
-    search_query = request.args.get("search_query", "").strip()
+    search_query = request.args.get("q", "").strip()
     genre_filter = request.args.get("genre_filter")
     format_style = request.args.get("format_style")
 
     stmt = db.select(Book)
 
     if search_query:
-        stmt = stmt.where(Book.title.ilike(f"%{search_query}%"))
+        stmt = stmt.filter(Book.title.ilike(f"%{search_query}%")) 
     
-    if genre_filter:
+    if genre_filter and genre_filter.strip() != "":
         stmt = stmt.join(Book.genre).where(Genre.name == genre_filter)
 
     if format_style == 'physical':
@@ -43,7 +43,10 @@ def books():
         stmt = stmt.where(Book.physical == False)
 
     books = db.session.execute(stmt).scalars().all()
-    return render_template("books.html", books=books,search_query=search_query)
+
+    genres = db.session.execute(db.select(Genre)).scalars().all()
+
+    return render_template("books.html", books=books,search_query=search_query,genres=genres)
 
 @app.route("/users")
 def users():
