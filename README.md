@@ -1,6 +1,8 @@
 
 # 📚 Agile Book Store Project
 
+hi
+
 This is a Flask-based web application for managing books, readers, and orders in a digital library or book store environment. The project uses SQLAlchemy ORM for database models, Jinja2 templates for rendering HTML, and Bootstrap for styling.
 
 ---
