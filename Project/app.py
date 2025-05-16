@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import Flask, render_template, redirect, request, url_for
+from sqlalchemy import asc, desc, or_, func
 from pathlib import Path
 from db import db
 from models import Book, User, Order, Orderbook, Genre
@@ -27,11 +28,12 @@ def books():
     search_query = request.args.get("q", "").strip()
     genre_filter = request.args.get("genre_filter")
     format_style = request.args.get("format_style")
+    sort_order = request.args.get("sort", "")
 
     stmt = db.select(Book)
 
     if search_query:
-        stmt = stmt.filter(Book.title.ilike(f"%{search_query}%")) 
+        stmt = stmt.where(or_(Book.title.ilike(f"%{search_query}%"), Book.author.ilike(f"%{search_query}%")))
     
     if genre_filter and genre_filter.strip() != "":
         stmt = stmt.join(Book.genre).where(Genre.name == genre_filter)
@@ -42,20 +44,39 @@ def books():
     if format_style == 'digital':
         stmt = stmt.where(Book.physical == False)
 
+    if sort_order == "asc":
+        stmt = stmt.order_by(asc(Book.title))
+    
+    if sort_order == "desc":
+        stmt = stmt.order_by(desc(Book.title))
+
     books = db.session.execute(stmt).scalars().all()
 
     genres = db.session.execute(db.select(Genre)).scalars().all()
 
     return render_template("books.html", books=books,search_query=search_query,genres=genres)
 
+def only_digits(phone_string):
+    return ''.join(filter(str.isdigit, phone_string))
+
 @app.route("/users")
 def users():
     search_query= request.args.get("q","").strip()
+    sort_order = request.args.get("sort", "")
+
     stmt = db.select(User)
 
     if search_query:
-        stmt = stmt.filter(User.name.ilike(f"%{search_query}%"))
+        cleaned_digits = only_digits(search_query)
+        
+        stmt = stmt.where(or_(User.name.ilike(f"%{search_query}%"), func.replace(func.replace(func.replace(User.phone, '-', ''), '(', ''), ')', '').ilike(f"%{cleaned_digits}%")))
     
+    if sort_order == "asc":
+        stmt = stmt.order_by(asc(User.name))
+    
+    if sort_order == "desc":
+        stmt = stmt.order_by(desc(User.name))
+
     users = db.session.execute(stmt).scalars().all()
     return render_template("users.html", users=users,search_query=search_query)
 
