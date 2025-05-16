@@ -67,10 +67,8 @@ def users():
     stmt = db.select(User)
 
     if search_query:
-        cleaned_digits = only_digits(search_query)
+        stmt = stmt.where(or_(User.name.ilike(f"%{search_query}%"), User.phone.ilike(f"%{search_query}%")))
         
-        stmt = stmt.where(or_(User.name.ilike(f"%{search_query}%"), func.replace(func.replace(func.replace(User.phone, '-', ''), '(', ''), ')', '').ilike(f"%{cleaned_digits}%")))
-    
     if sort_order == "asc":
         stmt = stmt.order_by(asc(User.name))
     

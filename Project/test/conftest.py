@@ -32,6 +32,12 @@ def client():
             user = User(name="John Doe", phone="123-456-7890")
             db.session.add(user)
             
+            book1 = Book(title="Test 101", author="Luke Skywalker", genre=genre, quantity=20, physical=False)
+            db.session.add(book1)
+
+            user1 = User(name="Jenny Smith", phone="(123) 456-7890")
+            db.session.add(user1)
+
             db.session.commit()
         yield client
     
