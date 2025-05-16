@@ -14,6 +14,12 @@ This is a Flask-based web application for managing books, readers, and orders in
 - Modular structure with SQLAlchemy 2.0-style models
 - Automatic database creation on first run
 
+---
+
+## How to Use
+
+
+
 ## 🆕 Recent Changes
 
 ✅ **May 6, 2025**
