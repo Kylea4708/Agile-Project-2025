@@ -36,4 +36,8 @@ def test_invalid_quantity_in_order(client):
     
     
     assert response.status_code == 200
-  
+
+def test_order_delete(client):
+    response = client.post("/orders/1/delete", follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Orders" in response.data
