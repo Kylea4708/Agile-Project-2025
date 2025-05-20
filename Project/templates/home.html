@@ -1,7 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="text-center">
-  <h1>Welcome to the BookWorms Book store manager!</h1>
+<div class="container mt-5">
+  <div class="row align-items-center">
+    <div class="col-md-6 order-md-1">
+      <h1>Welcome to the BookWorms store manager!</h1>
+      <p class="lead mt-3">
+        BookWorms is your complete solution for managing your bookstore inventory, 
+        sales, and customer relationships all in one place.
+      </p>
+    </div>
+    
+    <div class="col-md-6 order-md-2">
+      <img src="{{ url_for('static', filename='images/Reading book-cuate.png') }}"
+        alt="Bookstore manager interface"
+        class="img-fluid rounded shadow">
+    </div>
+  </div>
 </div>
 {% endblock %}
