@@ -3,3 +3,4 @@ __pycache__/
 book_store.db
 htmlcov/
 *.pyc
+.pytest_cache
