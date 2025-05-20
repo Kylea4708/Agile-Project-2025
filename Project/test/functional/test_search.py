@@ -30,8 +30,8 @@ def test_booksearch_author(client):
 def test_usersearch_phone(client):
     response = client.get('/users?q=1234567890')
     assert response.status_code == 200
-    assert b"1234567890" in response.data or b"(123) 456-7890" in response.data
-
+    assert b"1234567890" in response.data
+    
 def test_booksearch_invalid_author(client):
     response = client.get('/books?q=NoAuthorMatch')
     assert response.status_code == 200
