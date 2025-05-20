@@ -2,3 +2,4 @@ __pycache__/
 *.py[cod]
 book_store.db
 htmlcov/
+*.pyc
