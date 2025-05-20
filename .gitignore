@@ -4,3 +4,4 @@ book_store.db
 htmlcov/
 *.pyc
 .pytest_cache
+.coverage
