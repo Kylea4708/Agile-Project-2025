@@ -1,8 +1,6 @@
 
 # 📚 Agile Book Store Project
 
-hi
-
 This is a Flask-based web application for managing books, readers, and orders in a digital library or book store environment. The project uses SQLAlchemy ORM for database models, Jinja2 templates for rendering HTML, and Bootstrap for styling.
 
 ---
@@ -18,11 +16,70 @@ This is a Flask-based web application for managing books, readers, and orders in
 
 ---
 
-## How to Use
+## 🛠️ How to Use the Project
+### 1. Install dependencies
+
+Make sure you have Python 3.10+ and run on your terminal:
+
+`pip install -r requirements.txt`
+
+### 2. Run the Flask app
+
+From the project directory, `cd  Project`:
+
+`python manage.py run`
+
+### 3. Import demo data (optional):
+
+`python manage.py import-users`
+`python manage.py create-books`
+
+### 4. Navigate the app
+
+Open a browser and run:
+
+`python app.py`
+
+
+The address the app is set to is:
+http://127.0.0.1:8888
+
+
+**Have fun!**
+
+---
+
+Key Features:
+
+📘 Books: View, search, filter, and sort the catalog
+
+👥 Users: Search by name or phone, sort alphabetically
+
+📦 Orders: View and create new orders (admin)
+
+🔍 Search: Supports flexible formats (e.g., phone numbers with or without punctuation)
 
 
 
 ## 🆕 Recent Changes
+
+✅ **May 20, 2025**
+- Enhanced `/users` search functionality to support flexible phone number formatting:
+  - Now accepts input with dashes, parentheses, or spaces (e.g., `1234567890`, `(123) 456-7890`)
+  - Implemented digit normalization using SQLAlchemy's `func.replace`
+- Improved SQL filter logic using `or_(*filters)` and helper functions
+- Added defensive checks to avoid query crashes due to empty search fields
+
+✅ **May 16, 2025**
+- Added `sort A–Z` and `sort Z–A` buttons to `books.html` and `users.html`
+- Implemented alphabetical sorting using SQLAlchemy's `order_by()` with `asc()` and `desc()`
+- Sorting is maintained alongside search and filter results
+- UI improvements: separated sort buttons from search filters for cleaner layout
+
+✅ **May 9, 2025**
+- Reintegrated user search filtering by both name and phone number
+- Added Tests for the functionality of the project
+- Fixed bugs related to blank queries and inconsistent matches in search bar
 
 ✅ **May 6, 2025**
 - Implemented dynamic book pricing based on genre and format (physical vs. digital) using a genre-based pricing matrix
